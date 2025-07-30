@@ -1,9 +1,6 @@
+/** 
 package com.mt.sample;
 
-/**
- * Hello world!
- *
- */
 import java.util.Date;
 
 public class HelloWorld {
@@ -20,3 +17,5 @@ public class HelloWorld {
 	}
 
 }
+
+*/

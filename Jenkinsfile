@@ -1,47 +1,50 @@
-
 pipeline {
     agent any
 
-    environment {
-        TZ = "Asia/Kolkata"
-    }
-
-    options {
-        timeout(time: 10, unit: 'MINUTES')  // Build timeout
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
     }
 
     triggers {
-        cron('TZ=Asia/Kolkata\n0 3 * * 1') // Every Monday 9:00 AM IST
+        cron('0 9 * * 1') // Every Monday at 9:00 AM IST
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/expertszen/java-standalone-application.git'
+                git branch: 'main',
+                    url: 'https://github.com/expertszen/java-standalone-application.git'
             }
         }
-
-        stage('Build Java Program') {
+        stage('Build') {
             steps {
-                sh 'javac HelloWorld.java'
+                sh 'mvn clean install'
             }
         }
-
-        stage('Run Java Program') {
+        stage('Run Application') {
             steps {
-                sh 'java HelloWorld'
+                sh 'java -cp target/java-standalone-application-1.0-SNAPSHOT.jar com.expertszen.App'
             }
         }
-    }
-
-    post {
-        success {
-            echo 'Build completed successfully.'
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
-        failure {
-            mail to: 'your-email@example.com',
-                 subject: "Jenkins Job Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Check Jenkins for details: ${env.BUILD_URL}"
+        stage('Post Build Notification') {
+            steps {
+                emailext (
+                    subject: "Jenkins Build: ${currentBuild.currentResult}",
+                    body: "Build completed with status: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL}",
+                    to: 'your-email@example.com'
+                )
+            }
         }
     }
 }
