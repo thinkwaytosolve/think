@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
+                git branch: 'feature/meghna',
                     url: 'https://github.com/expertszen/java-standalone-application.git'
             }
         }
