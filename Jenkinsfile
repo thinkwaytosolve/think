@@ -19,17 +19,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
         stage('Run Application') {
             steps {
-                sh 'java -cp target/java-standalone-application-1.0-SNAPSHOT.jar com.expertszen.App'
+                bat 'java -cp target/java-standalone-application-1.0-SNAPSHOT.jar com.expertszen.App'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
