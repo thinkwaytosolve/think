@@ -6,44 +6,22 @@ pipeline {
         maven 'Maven3'
     }
 
-    triggers {
-        cron('0 9 * * 1') // Every Monday at 9:00 AM IST
-    }
-
     stages {
         stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/expertszen/java-standalone-application.git'
-            }
+            // write your logic here
         }
         stage('Build') {
-            steps {
-                bat 'mvn clean install'
-            }
+            // write your logic here
         }
         stage('Run Application') {
-            steps {
-                bat 'java -cp target/java-standalone-application-1.0-SNAPSHOT.jar com.expertszen.App'
-            }
+            // write your logic here
         }
         stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
+            // write your logic here
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
                 }
-            }
-        }
-        stage('Post Build Notification') {
-            steps {
-                emailext (
-                    subject: "Jenkins Build: ${currentBuild.currentResult}",
-                    body: "Build completed with status: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL}",
-                    to: 'your-email@example.com'
-                )
             }
         }
     }
