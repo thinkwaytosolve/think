@@ -42,7 +42,7 @@ pipeline {
                 emailext (
                     subject: "Jenkins Build: ${currentBuild.currentResult}",
                     body: "Build completed with status: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL}",
-                    to: 'your-email@example.com'
+                    to: 'expertszen@gmail.com'
                 )
             }
         }
