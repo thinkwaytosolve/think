@@ -7,7 +7,7 @@ pipeline {
     }
 
     triggers {
-        cron('0 9 * * 1') // Every Monday at 9:00 AM IST
+       githubPush()
     }
 
     stages {
