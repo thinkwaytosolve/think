@@ -8,16 +8,19 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            // write your logic here
+            steps {
+                git url: 'https://github.com/thinkwaytosolve/think.git', branch: 'main'
+            }
         }
         stage('Build') {
-            // write your logic here
-        }
-        stage('Run Application') {
-            // write your logic here
+            steps {
+                sh 'mvn clean install'
+            }
         }
         stage('Test') {
-            // write your logic here
+            steps {
+                sh 'mvn test'
+            }
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
